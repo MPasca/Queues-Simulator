@@ -13,4 +13,23 @@ public class Client {
 
     public Client(){}
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setArrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public void setServiceTime(int serviceTime) {
+        this.serviceTime = serviceTime;
+    }
+
+    public void setTimeSpent(int timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    public int getTimeSpent(){
+        return this.timeSpent;
+    }
 }

@@ -27,6 +27,8 @@ public class Store {
 
         this.minServiceTime = minServiceTime;
         this.maxServiceTime = maxServiceTime;
+
+        clientList = this.generateClients(noClients, minArrivalTime, maxArrivalTime, minServiceTime, maxServiceTime);
     }
 
     public Store(){}
@@ -37,5 +39,20 @@ public class Store {
         System.out.println("Interval: " + interval + " seconds.");
         System.out.println("Arrival time: [" + minArrivalTime + ", " + maxArrivalTime + "]");
         System.out.println("Service time: [" + minServiceTime + ", " + maxServiceTime + "]");
+    }
+
+    public List<Client> generateClients(int noClients, int minArrivalTime, int maxArrivalTime, int minServiceTime, int maxServiceTime){
+        List<Client> newClientList = new ArrayList<>();
+
+        for(int i = 0; i < noClients; i++){
+            Client auxClient = new Client();
+            auxClient.setID(i);
+            auxClient.setArrivalTime((int)(Math.random() * (maxArrivalTime - minArrivalTime + 1) + minArrivalTime));
+            auxClient.setServiceTime((int)(Math.random() * (maxServiceTime - minServiceTime + 1) + minServiceTime));
+
+            newClientList.add(auxClient);
+        }
+
+        return newClientList;
     }
 }
