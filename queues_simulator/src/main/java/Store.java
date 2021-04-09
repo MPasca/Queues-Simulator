@@ -7,7 +7,8 @@ public class Store {
 
     private int noClients;
     private int noQueues;
-    private int simInterval;
+
+    private int interval;
 
     private int minArrivalTime;
     private int maxArrivalTime;
@@ -15,10 +16,11 @@ public class Store {
     private int minServiceTime;
     private int maxServiceTime;
 
-    public Store(int noClients, int noQueues, int simInterval, int minArrivalTime, int maxArrivalTime, int minServiceTime, int maxServiceTime){
+    public Store(int noClients, int noQueues, int interval, int minArrivalTime, int maxArrivalTime, int minServiceTime, int maxServiceTime){
         this.noClients = noClients;
         this.noQueues = noQueues;
-        this.simInterval = simInterval;
+
+        this.interval = interval;
 
         this.minArrivalTime = minArrivalTime;
         this.maxArrivalTime = maxArrivalTime;
@@ -28,4 +30,12 @@ public class Store {
     }
 
     public Store(){}
+
+    public void printStoreComp(){
+        System.out.println("noClients: " + noClients);
+        System.out.println("noQueues: " + noQueues);
+        System.out.println("Interval: " + interval + " seconds.");
+        System.out.println("Arrival time: [" + minArrivalTime + ", " + maxArrivalTime + "]");
+        System.out.println("Service time: [" + minServiceTime + ", " + maxServiceTime + "]");
+    }
 }

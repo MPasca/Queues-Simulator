@@ -3,9 +3,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class View {
     JFrame newFrame = new JFrame("Queue simulator");
+    JLabel lblTitle = new JLabel("Queue simulator");
 
     JPanel panelClients = new JPanel(new FlowLayout());
     JLabel lblClients = new JLabel("Number of clients:");
@@ -15,12 +17,9 @@ public class View {
     JLabel lblQueues = new JLabel("Number of queues:");
     JTextField txtQueues = new JTextField(5);
 
-    JPanel panelInterval = new JPanel(new GridLayout(2, 2));
-
-    JLabel lblMinInterval  = new JLabel("Min:");
-    JTextField txtMinInterval = new JTextField(5);
-    JLabel lblMaxInterval = new JLabel("Max:");
-    JTextField txtMaxInterval = new JTextField(5);
+    JPanel panelInterval = new JPanel(new FlowLayout());
+    JLabel lblInterval  = new JLabel("Simulation duration (in seconds):");
+    JTextField txtInterval = new JTextField(5);
 
     JPanel panelArrival = new JPanel(new GridLayout(2, 2));
 
@@ -37,9 +36,7 @@ public class View {
     JTextField txtMaxService = new JTextField(5);
 
     JButton btnStart = new JButton("Start simulation");
-
     JPanel mainPanel = new JPanel();
-
 
     public View(){
         Font chosenFont = new Font("Courier New", Font.PLAIN,14);
@@ -47,8 +44,14 @@ public class View {
         Border border = BorderFactory.createMatteBorder(1, 3, 1, 1, Color.decode("#f7f7ea"));
         EmptyBorder spacingBorder = new EmptyBorder(20, 20, 20, 20);
 
+        lblTitle.setForeground(Color.decode("#efeb0b"));
+        lblTitle.setFont(new Font("Courier New", Font.BOLD,20));
+
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(lblTitle);
+
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        newFrame.setSize(500, 600);
+        newFrame.setSize(500, 500);
 
 // ------------------ Panel Clients
 
@@ -77,23 +80,14 @@ public class View {
 // ------------------ Panel Interval
 
         panelInterval.setBackground(Color.decode("#161616"));
-
-        lblMinInterval.setFont(chosenFont);
-        lblMinInterval.setForeground(Color.decode("#efeb0b"));
-        txtMinInterval.setFont(chosenFont);
-
-        lblMaxInterval.setFont(chosenFont);
-        lblMaxInterval.setForeground(Color.decode("#efeb0b"));
-        txtMaxInterval.setFont(chosenFont);
-
-        panelInterval.setBackground(Color.decode("#161616"));
-        panelInterval.add(lblMinInterval);
-        panelInterval.add(txtMinInterval);
-
-        panelInterval.add(lblMaxInterval);
-        panelInterval.add(txtMaxInterval);
+        lblInterval.setFont(chosenBoldFont);
+        lblInterval.setForeground(Color.decode("#efeb0b"));
+        txtInterval.setFont(chosenFont);
+        panelInterval.add(lblInterval);
+        panelInterval.add(txtInterval);
         
         panelInterval.setBorder(BorderFactory.createTitledBorder(border, "Interval", TitledBorder.TOP, TitledBorder.DEFAULT_JUSTIFICATION, chosenFont, Color.decode("#f7f7ea")));
+        panelQueues.setPreferredSize(new Dimension(100, 20));
 
 // ------------------ Panel Arrival
 
@@ -145,22 +139,46 @@ public class View {
         mainPanel.setBackground(Color.decode("#161616"));
 
         mainPanel.add(panelClients);
-        //mainPanel.add(sep);
         mainPanel.add(panelQueues);
-        //mainPanel.add(sep);
         mainPanel.add(panelInterval);
-        //mainPanel.add(sep);
         mainPanel.add(panelArrival);
-        //mainPanel.add(sep);
         mainPanel.add(panelService);
-        //mainPanel.add(sep);
         mainPanel.add(btnStart);
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         mainPanel.setBorder(spacingBorder);
 
         newFrame.setContentPane(mainPanel);
         newFrame.setVisible(true);
     }
+
+    public int getText(String element) throws ExceptionIncorrectInput{
+        String text = "";
+        switch (element) {
+            case "clients" -> text = txtClients.getText();
+            case "queue" -> text = txtQueues.getText();
+            case "interval" -> text = txtInterval.getText();
+            case "min_arrival" -> text = txtMinArrival.getText();
+            case "max_arrival" -> text = txtMaxArrival.getText();
+            case "min_service" -> text = txtMinService.getText();
+            case "max_service" -> text = txtMaxService.getText();
+            default -> JOptionPane.showMessageDialog(newFrame, "Something went wrong!");
+        }
+        if(text.equals("")){
+            throw new ExceptionIncorrectInput(element + " text field", "cannot be empty");
+        }
+        else {
+            try{
+                return Integer.parseInt(text);
+            }
+            catch(NumberFormatException e){
+                throw new ExceptionIncorrectInput("clients text field", "can only contain an integer");
+            }
+        }
+    }
+
+    public void addListener(ActionListener actionListener){
+        btnStart.addActionListener(actionListener);
+    }
+
 }
