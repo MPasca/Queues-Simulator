@@ -3,16 +3,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Controller {
-    private Model model;
+    private Store store;
     private View view;
 
-    public Controller(Model model, View view){
-        this.model = model;
+    public Controller(Store store, View view){
+        this.store = store;
         this.view = view;
         view.addListener(new StartListener());
     }
 
-    private void getInput() throws ExceptionIncorrectInput{
+    private void startSimulation() throws ExceptionIncorrectInput{
         int noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ;
         noClients = view.getText("clients");
         noQueues = view.getText("queue");
@@ -31,14 +31,16 @@ public class Controller {
         if(maxServ > interval){
             throw new ExceptionIncorrectInput("maxService simDuration", "The maximum duration of a service is larger than the entire duration of the simulation");
         }
-        model = new Model(new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ));
+
+        store = new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ);
+        store.run();
     }
 
     class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
-                getInput();
+                startSimulation();
             }catch(Exception error){
                 error.printStackTrace();
             }

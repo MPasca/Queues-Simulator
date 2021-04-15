@@ -85,7 +85,7 @@ public class View {
         txtInterval.setFont(chosenFont);
         panelInterval.add(lblInterval);
         panelInterval.add(txtInterval);
-        
+
         panelInterval.setBorder(BorderFactory.createTitledBorder(border, "Interval", TitledBorder.TOP, TitledBorder.DEFAULT_JUSTIFICATION, chosenFont, Color.decode("#f7f7ea")));
         panelQueues.setPreferredSize(new Dimension(100, 20));
 
@@ -126,7 +126,7 @@ public class View {
         panelService.add(txtMinService);
         panelService.add(lblMaxService);
         panelService.add(txtMaxService);
-        
+
         panelService.setBorder(BorderFactory.createTitledBorder(border, "Service", TitledBorder.TOP, TitledBorder.DEFAULT_JUSTIFICATION, chosenFont, Color.decode("#f7f7ea")));
 
 // ------------------ Main Panel
