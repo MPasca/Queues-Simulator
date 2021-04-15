@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 public class View {
     JFrame newFrame = new JFrame("Queue simulator");
+    JFrame logsFrame = new JFrame("Logs");
+
     JLabel lblTitle = new JLabel("Queue simulator");
 
     JPanel panelClients = new JPanel(new FlowLayout());
@@ -37,6 +39,8 @@ public class View {
 
     JButton btnStart = new JButton("Start simulation");
     JPanel mainPanel = new JPanel();
+
+    ViewLogs console = new ViewLogs();
 
     public View(){
         Font chosenFont = new Font("Courier New", Font.PLAIN,14);
@@ -150,6 +154,9 @@ public class View {
 
         newFrame.setContentPane(mainPanel);
         newFrame.setVisible(true);
+
+        logsFrame.add(console);
+        logsFrame.setVisible(false);
     }
 
     public int getText(String element) throws ExceptionIncorrectInput{

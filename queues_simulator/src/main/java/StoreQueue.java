@@ -10,13 +10,13 @@ public class StoreQueue implements Runnable{
     Client crtClient = null;
     private int ID;
 
-    private boolean isOpen;
+    private boolean isOpen = true;
 
     public StoreQueue(int ID, int maxClients){
         this.ID = ID;
         this.maxClients = maxClients;
         this.clientList = new ArrayBlockingQueue<>(maxClients);
-        this.isOpen = false;
+        this.isOpen = true;
     }
 
     public void addClient(Client newClient){
@@ -27,16 +27,7 @@ public class StoreQueue implements Runnable{
     }
 
     public int timeSpent(){
-        if(!this.clientList.isEmpty()) {
-            int duration = this.clientList.peek().getServiceTime();
-            for (Client c : this.clientList) {
-                duration += c.getServiceTime();
-            }
-
-            return duration;
-        }
-
-        return 0;
+        return waitingTime.get();
     }
 
     public int getID(){
@@ -70,8 +61,8 @@ public class StoreQueue implements Runnable{
     }
 
     @Override
-    synchronized public void run() {
-        while(true) {
+    public void run() {
+        while(isOpen()) {
             try {
                 if(!this.clientList.isEmpty()) {
                     if(crtClient == null) {
@@ -84,6 +75,7 @@ public class StoreQueue implements Runnable{
                     Thread.sleep( 1000);
 
                     this.crtClient.decreaseServiceTime();
+                    this.waitingTime.decrementAndGet();
                     if(this.crtClient.getServiceTime() == 0){
                         this.crtClient = null;
                         this.clientList.poll();

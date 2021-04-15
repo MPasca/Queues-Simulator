@@ -1,6 +1,7 @@
 public class MVC {
     public static void main(String [] args){
         Store store = new Store();
+        /*
         Thread simThread = new Thread(store);
         simThread.start();
         try {
@@ -8,7 +9,9 @@ public class MVC {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //View view = new View();
-        //Controller controller = new Controller(store, view);
+        */
+
+        View view = new View();
+        Controller controller = new Controller(store, view);
     }
 }

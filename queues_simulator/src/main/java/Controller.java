@@ -33,13 +33,20 @@ public class Controller {
         }
 
         store = new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ);
-        store.run();
+        Thread simThread = new Thread(store);
+        simThread.start();
+        try {
+            simThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
+                view.logsFrame.setVisible(true);
                 startSimulation();
             }catch(Exception error){
                 error.printStackTrace();
