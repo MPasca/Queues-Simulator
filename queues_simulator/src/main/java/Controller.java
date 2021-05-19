@@ -3,12 +3,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Controller {
-    private Store store;
-    private View view;
+    private View view = new View();
 
-    public Controller(Store store, View view){
-        this.store = store;
-        this.view = view;
+    public Controller(){
         view.addListener(new StartListener());
     }
 
@@ -32,7 +29,7 @@ public class Controller {
             throw new ExceptionIncorrectInput("maxService simDuration", "The maximum duration of a service is larger than the entire duration of the simulation");
         }
 
-        store = new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ);
+        Store store = new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ);
         Thread simThread = new Thread(store);
         simThread.start();
         try {
@@ -46,7 +43,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
-                view.logsFrame.setVisible(true);
+                view.newFrame.setVisible(false);
                 startSimulation();
             }catch(Exception error){
                 error.printStackTrace();

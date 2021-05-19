@@ -3,21 +3,32 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.print.*;
 
-public class ViewLogs extends JPanel{
-    private JTextArea area;
-    private Border border = BorderFactory.createMatteBorder(1, 3, 1, 1, Color.decode("#f7f7ea"));
-    private Font font = new Font("Courier New", Font.PLAIN,14);
+public class ViewLogs{
+    public JFrame logsFrame = new JFrame();
+
+    public JPanel panelLogs = new JPanel();
+    public JTextArea area;
+
+    private Border border = BorderFactory.createMatteBorder(1, 3, 1, 1, Color.decode("#000000"));
+    private Font font = new Font("Courier New", Font.PLAIN,12);
     JButton clear = new JButton();
 
     public ViewLogs(){
-        this.setBorder(border);
+        logsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        logsFrame.setSize(600, 500);
+
+        panelLogs.setBorder(border);
         area = new JTextArea();
-        this.setLayout(new BorderLayout());
+        area.setFont(font);
+        area.setForeground(Color.decode("#000000"));
+
+        panelLogs.setLayout(new BorderLayout());
         JScrollPane scroll = new JScrollPane(area);
-        this.add(scroll, BorderLayout.CENTER);
+
+        panelLogs.add(scroll, BorderLayout.CENTER);
+
+        logsFrame.add(panelLogs);
+        logsFrame.setVisible(true);
     }
 
-    public void write(String text){
-        area.append(text);
-    }
 }
