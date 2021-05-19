@@ -42,6 +42,7 @@ public class Scheduler {
     public void dispatchClient(Client newClient){
         newClient.setProcessed();
         findFavQueue().addClient(newClient);
+        newClient.setWaitingTime(findFavQueue().timeSpent());
     }
 
     public List<StoreQueue> getQueueList() {

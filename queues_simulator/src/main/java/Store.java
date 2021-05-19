@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +21,11 @@ public class Store implements Runnable{
     private int minServiceTime;
     private int maxServiceTime;
 
+    private double avgServiceTime;
+    private double avgWaitingTime;
     Scheduler scheduler;
+
+    ViewLogs viewLogs;
 
     public Store(int noClients, int noQueues, int interval, int minArrivalTime, int maxArrivalTime, int minServiceTime, int maxServiceTime){
         this.noClients = noClients;
@@ -34,11 +39,19 @@ public class Store implements Runnable{
         this.minServiceTime = minServiceTime;
         this.maxServiceTime = maxServiceTime;
 
-        //generateClients();
-        //generateQueues();
+        generateClients();
+        avgServiceTime = 0;
+        for(Client c: waitingList){
+            avgServiceTime += c.getServiceTime();
+        }
+
+        avgServiceTime /= noClients;
+
         this.scheduler = new Scheduler(noClients, noQueues);
 
+        this.viewLogs = new ViewLogs();
     }
+
 
     public void generateTestClients(){
         waitingList.add(new Client(1, 2, 2));
@@ -51,8 +64,16 @@ public class Store implements Runnable{
         generateTestClients();
         this.noQueues = 2;
         this.noClients = 4;
+        avgServiceTime = 0;
+        avgWaitingTime = 0;
+        for(Client c: waitingList){
+            avgServiceTime += c.getServiceTime();
+        }
+        avgServiceTime /= noClients;
         scheduler = new Scheduler(4, 2);
         interval = 30;
+
+        this.viewLogs = new ViewLogs();
     }
 
     public void printStoreComp(){
@@ -74,15 +95,19 @@ public class Store implements Runnable{
     }
 
     public void run() {
-        while(clk < interval){
+        while(clk <= interval){
+            viewLogs.area.append("Time " + clk + '\n');
+            viewLogs.area.append(printDetails());
+
             for(Client c: waitingList){
                 if(c.getArrivalTime() == clk && !c.isProcessed()){
                     scheduler.dispatchClient(c);
+                    avgWaitingTime += c.getWaitingTime();
                 }
             }
 
+
             try {
-                System.out.println("Write in logs.txt");
                 printStore();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -98,6 +123,18 @@ public class Store implements Runnable{
         }
 
         scheduler.killThreads();
+
+        viewLogs.area.append("Average service time: " + avgServiceTime + '\n');
+        avgWaitingTime = avgWaitingTime/this.noClients;
+        viewLogs.area.append("Average waiting time: " + avgWaitingTime + '\n');
+
+        try {
+            logs.write("Average service time: " + avgServiceTime + '\n');
+
+            logs.write("Average waiting time: " + avgWaitingTime + '\n');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             System.out.println("Close logs");
@@ -116,6 +153,24 @@ public class Store implements Runnable{
         }
     }
 
+    private String printDetails(){
+        String toPrint = "Waiting list: ";
+        for (Client c : this.waitingList) {
+            if(!c.isProcessed()) {
+                toPrint += c.toString() + "; ";
+            }
+        }
+
+        toPrint += '\n';
+
+        for(StoreQueue q: scheduler.getQueueList()){
+            toPrint += "Queue " + (q.getID()+1) + ": " + q.toString() + '\n';
+        }
+
+        toPrint += "_____________________________________________________________\n";
+        return toPrint;
+    }
+
     private void printStore() throws IOException {
 
         logs.write("Time " + clk + '\n');
@@ -129,9 +184,10 @@ public class Store implements Runnable{
         logs.write(toPrint + '\n');
 
         for(StoreQueue q: scheduler.getQueueList()){
-            logs.write("Queue " + q.getID() + ": " + q.toString() + '\n');
+            logs.write("Queue " + (q.getID()+1) + ": " + q.toString() + '\n');
         }
 
         logs.write("_____________________________________________________________\n");
     }
+
 }

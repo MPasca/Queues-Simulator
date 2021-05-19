@@ -1,5 +1,6 @@
 public class Client {
     private int ID;
+    private int waitingTime;
     private int arrivalTime;
     private int serviceTime;
     private boolean isProcessed;
@@ -9,6 +10,7 @@ public class Client {
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
         this.isProcessed = false;
+        this.waitingTime = 0;
     }
 
     public Client(){}
@@ -18,6 +20,13 @@ public class Client {
     }
     public int getArrivalTime(){
         return this.arrivalTime;
+    }
+
+    public void setWaitingTime(int waitingTime){
+        this.waitingTime = waitingTime;
+    }
+    public int getWaitingTime(){
+        return this.waitingTime;
     }
 
     public void setProcessed(){

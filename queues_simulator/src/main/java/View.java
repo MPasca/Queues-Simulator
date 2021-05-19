@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 public class View {
     JFrame newFrame = new JFrame("Queue simulator");
+
     JLabel lblTitle = new JLabel("Queue simulator");
 
     JPanel panelClients = new JPanel(new FlowLayout());
@@ -52,6 +53,7 @@ public class View {
 
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         newFrame.setSize(500, 500);
+
 
 // ------------------ Panel Clients
 
@@ -150,6 +152,7 @@ public class View {
 
         newFrame.setContentPane(mainPanel);
         newFrame.setVisible(true);
+
     }
 
     public int getText(String element) throws ExceptionIncorrectInput{
