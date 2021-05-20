@@ -168,14 +168,14 @@ public class View {
             default -> JOptionPane.showMessageDialog(newFrame, "Something went wrong!");
         }
         if(text.equals("")){
-            throw new ExceptionIncorrectInput(element + " text field", "cannot be empty");
+            throw new ExceptionIncorrectInput(element + " text field", "cannot be empty", newFrame);
         }
         else {
             try{
                 return Integer.parseInt(text);
             }
             catch(NumberFormatException e){
-                throw new ExceptionIncorrectInput("clients text field", "can only contain an integer");
+                throw new ExceptionIncorrectInput("clients text field", "can only contain an integer", newFrame);
             }
         }
     }

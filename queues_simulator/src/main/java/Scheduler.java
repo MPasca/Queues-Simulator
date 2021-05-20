@@ -11,8 +11,8 @@ public class Scheduler {
         this.maxClients = maxClients;
         this.maxQueues = maxQueues;
 
-        for(int i = 0; i < maxQueues; i++){
-            this.queueList.add(i, new StoreQueue(i, maxClients));
+        for(int i = 0; i < this.maxQueues; i++){
+            this.queueList.add(i, new StoreQueue(i, this.maxClients));
 
             this.threadList.add(i, new Thread(this.queueList.get(i)));
             this.threadList.get(i).start();

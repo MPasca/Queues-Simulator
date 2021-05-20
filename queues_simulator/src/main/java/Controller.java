@@ -20,14 +20,16 @@ public class Controller {
         maxServ = view.getText("max_service");
 
         if(minArriv > maxArriv) {
-            throw new ExceptionIncorrectInput("minArriv maxArriv", "minimum can't be larger than maximum");
+            throw new ExceptionIncorrectInput("minArriv maxArriv", "minimum can't be larger than maximum", view.newFrame);
         }
         if(minServ > maxServ){
-            throw new ExceptionIncorrectInput("minService maxService", "minimum can't be larger than maximum");
+            throw new ExceptionIncorrectInput("minService maxService", "minimum can't be larger than maximum", view.newFrame);
         }
         if(maxServ > interval){
-            throw new ExceptionIncorrectInput("maxService simDuration", "The maximum duration of a service is larger than the entire duration of the simulation");
+            throw new ExceptionIncorrectInput("maxService simDuration", "The maximum duration of a service is larger than the entire duration of the simulation", view.newFrame);
         }
+
+        view.newFrame.setVisible(false);
 
         Store store = new Store(noClients, noQueues, interval, minArriv, maxArriv, minServ, maxServ);
         Thread simThread = new Thread(store);
@@ -43,7 +45,6 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
-                view.newFrame.setVisible(false);
                 startSimulation();
             }catch(Exception error){
                 error.printStackTrace();

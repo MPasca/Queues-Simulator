@@ -1,10 +1,9 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.print.*;
 
 public class ViewLogs{
-    public JFrame logsFrame = new JFrame();
+    public JFrame logsFrame = new JFrame("Queue logs");
 
     public JPanel panelLogs = new JPanel();
     public JTextArea area;
